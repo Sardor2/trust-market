@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { Global } from "@emotion/react";
+import { globalStyles } from "./config/styles.config";
+import { ThemeProvider } from "@emotion/react";
+import { lightTheme, muiTheme } from "./config/theme.config";
+import { ThemeProvider as MuiProvider } from "@mui/material/styles";
+import Store from "./state/store";
+import Views from "./views";
+import { StyledEngineProvider } from "@mui/material/styles";
+import { QueryClientProvider } from "react-query";
+import queryClient from "./config/react-query.config";
+import Snackbar from "./components/snackbar";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <StyledEngineProvider injectFirst>
+        <MuiProvider theme={muiTheme}>
+          <ThemeProvider theme={lightTheme}>
+            <Global styles={globalStyles} />
+            <Snackbar>
+              <Store>
+                <Views />
+              </Store>
+            </Snackbar>
+          </ThemeProvider>
+        </MuiProvider>
+      </StyledEngineProvider>
+    </QueryClientProvider>
   );
 }
 
